@@ -1,9 +1,14 @@
 package ru.job4j.tracker;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Entity
+@Table(name = "items")
 public class Item {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
@@ -15,7 +20,11 @@ public class Item {
     public Item(String name) {
         this.name = name;
     }
-
+    
+    public Item() {
+    
+    }
+    
     public int getId() {
         return id;
     }
