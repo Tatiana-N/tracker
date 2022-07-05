@@ -55,4 +55,8 @@ public class Item {
                 + ", created=" + created.format(FORMATTER)
                 + '}';
     }
+    
+    public String getDescription() {
+        return description;
+    }
 }

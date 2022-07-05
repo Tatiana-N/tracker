@@ -13,7 +13,7 @@ public class TrackerMockitoTest {
 	
 	@Test
 	public void whenFindAll() {
-		Tracker tracker = new Tracker();
+		Store tracker = new HbmTracker();
 		StubOutput output = new StubOutput();
 		ShowAllItemsAction showAllItemsAction = new ShowAllItemsAction(output);
 		
@@ -26,16 +26,14 @@ public class TrackerMockitoTest {
 	
 	@Test
 	public void whenFindByName() {
-		Tracker tracker = new Tracker();
+		Store tracker = new HbmTracker();
 		
 		StubOutput output = new StubOutput();
 		ShowByNameAction showByNameAction = new ShowByNameAction(output);
 		Item item = new Item("Item");
 		tracker.add(item);
-		
 		Input input = mock(Input.class);
 		when(input.askStr(any(String.class))).thenReturn("Item");
-		
 		showByNameAction.execute(input, tracker);
 		
 		assertThat(output.toString(), is("=== Find items by name ===" + ln + item + ln));
@@ -44,7 +42,7 @@ public class TrackerMockitoTest {
 	
 	@Test
 	public void whenFindById() {
-		Tracker tracker = new Tracker();
+		Store tracker = new HbmTracker();
 		
 		StubOutput output = new StubOutput();
 		ShowByIdAction showByIdAction = new ShowByIdAction(output);
@@ -63,7 +61,7 @@ public class TrackerMockitoTest {
 	@Test
 	public void whenReplace() {
 		Output out = new StubOutput();
-		Tracker tracker = new Tracker();
+		Store tracker = new HbmTracker();
 		tracker.add(new Item("Replaced item"));
 		String replacedName = "New item name";
 		ReplaceAction rep = new ReplaceAction(out);
@@ -81,7 +79,7 @@ public class TrackerMockitoTest {
 	@Test
 	public void whenDelete() {
 		Output out = new StubOutput();
-		Tracker tracker = new Tracker();
+		Store tracker = new HbmTracker();
 		tracker.add(new Item("Delete item"));
 		DeleteAction deleteAction = new DeleteAction(out);
 		
