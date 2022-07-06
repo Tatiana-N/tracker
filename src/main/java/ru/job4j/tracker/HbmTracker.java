@@ -24,28 +24,27 @@ public class HbmTracker implements Store, AutoCloseable {
 	
 	@Override
 	public boolean replace(int id, Item item) {
-		try {
 			session.beginTransaction();
-			session.createQuery("update Item s set s.name = :newName, s.description = :newDesc where s.id = :fId").setParameter("newName", item.getName()).setParameter("newDesc", item.getDescription()).setParameter("fId", id).executeUpdate();
+			int count = session.createQuery("update Item s set s.name = :newName, "
+					+ "s.description = :newDesc where s.id = :fId")
+					.setParameter("newName", item.getName())
+					.setParameter("newDesc", item.getDescription())
+					.setParameter("fId", id)
+					.executeUpdate();
 			session.getTransaction().commit();
 			session.close();
 			session = sf.openSession();
-			return true;
-		} catch (Exception r) {
-			return false;
-		}
+			return count >= 1;
 	}
 	
 	@Override
 	public boolean delete(int id) {
-		try {
 			session.beginTransaction();
-			session.createQuery("delete from Item where id = :fId").setParameter("fId", id).executeUpdate();
+			int count = session.createQuery("delete from Item where id = :fId")
+					.setParameter("fId", id)
+					.executeUpdate();
 			session.getTransaction().commit();
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
+			return count >= 1;
 	}
 	
 	@Override
@@ -59,7 +58,9 @@ public class HbmTracker implements Store, AutoCloseable {
 	@Override
 	public List<Item> findByName(String key) {
 		session.beginTransaction();
-		Query<Item> queryId = session.createQuery("from Item s where s.name = :key ").setParameter("key", key);
+		Query<Item> queryId = session
+				.createQuery("from Item s where s.name = :key ")
+				.setParameter("key", key);
 		session.getTransaction().commit();
 		return queryId.list();
 	}
@@ -67,7 +68,9 @@ public class HbmTracker implements Store, AutoCloseable {
 	@Override
 	public Item findById(int id) {
 		session.beginTransaction();
-		Query<Item> queryId = session.createQuery("from Item s where s.id = :findId ").setParameter("findId", id);
+		Query<Item> queryId = session
+				.createQuery("from Item s where s.id = :findId ")
+				.setParameter("findId", id);
 		session.getTransaction().commit();
 		return queryId.uniqueResult();
 	}
